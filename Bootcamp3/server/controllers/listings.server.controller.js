@@ -39,7 +39,7 @@ exports.create = function(req, res) {
   listing.save(function(err) {
     if(err) {
       console.log(err);
-      res.status(400).send(err);
+      res.status(404).send(err);
     } else {
       res.json(listing);
       console.log(listing)
@@ -58,11 +58,31 @@ exports.update = function(req, res) {
   var listing = req.listing;
 
   /* Replace the listings's properties with the new properties found in req.body */
- 
+  if (req.body){
+    if ( req.body.address )
+      listing.address = req.body.address
+    if ( req.body.name )
+      listing.name = req.body.name
+    if ( req.body.code )
+      listing.code = req.body.code
+  }
   /*save the coordinates (located in req.results if there is an address property) */
- 
+  if ( req.results){
+    listing.coordinates = {
+      latitude: req.results.lat, 
+      longitude: req.results.lng
+    };
+  }
   /* Save the listing */
-
+  listing.save(function(err) {
+    if(err) {
+      console.log(err);
+      res.status(404).send(err);
+    } else {
+      res.json(listing);
+      console.log(listing)
+    }
+  });
 };
 
 /* Delete a listing */
@@ -70,12 +90,26 @@ exports.delete = function(req, res) {
   var listing = req.listing;
 
   /* Add your code to remove the listins */
-
+  Listing.deleteOne(listing, function(err){
+    if (err) {
+      res.status(404).send(err)
+    }
+    else{
+      res.status(200).end()
+    }
+  })
+  
 };
 
 /* Retreive all the directory listings, sorted alphabetically by listing code */
 exports.list = function(req, res) {
   /* Add your code */
+  Listing.find({}).sort({code: 1}).exec(function(err, listings){
+    if (err) throw err;
+    else {
+      res.json(listings)
+    }
+  })
 };
 
 /* 
@@ -88,7 +122,7 @@ exports.list = function(req, res) {
 exports.listingByID = function(req, res, next, id) {
   Listing.findById(id).exec(function(err, listing) {
     if(err) {
-      res.status(400).send(err);
+      res.status(404).send(err);
     } else {
       req.listing = listing;
       next();

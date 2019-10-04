@@ -248,7 +248,7 @@ This Bootcamp is an exercise in test driven development (TDD). When you first st
     - **implement functionality**  `update`, `delete`, `list` in `listings.server.controller.js` see notes and tutorials identified earlier in this README file for help.
     **You may want to use [postman](https://www.getpostman.com/downloads/) to develop and manually test your update, delete, list routes** (*Note:* You will have to start your server to use Postman run `node server.js`. )
     (i)  The following should GET a single listing by ID, copy and paste a single entry "id" from your database to replace the <ID> tag `http://localhost:8080/api/listings/<ID>`
-    (ii) The following sould GET all the listing - `http://localhost:8080/api/listings`
+    (ii) The following should GET all the listing - `http://localhost:8080/api/listings`
     (iii) Try also to test out your post and update requests
     - **run automated tests on your implementation** by running the mocha test found in the test folder `listings.server.routes.test.js` - some test may still fail. See notes in the test file to help resolve errors.
 
